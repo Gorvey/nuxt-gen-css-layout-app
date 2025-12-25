@@ -1,0 +1,48 @@
+# 依赖目录
+node_modules
+.pnpm-store
+
+# 构建输出
+.nuxt
+.output
+dist
+
+# 缓存
+.cache
+.temp
+
+# 环境配置
+.env
+.env.*
+
+# 日志
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 锁文件
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 编辑器目录
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 其他
+coverage
+.nitro
+.vercel
+.netlify
