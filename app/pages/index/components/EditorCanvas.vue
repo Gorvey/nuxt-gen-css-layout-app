@@ -8,7 +8,7 @@ import { useElementSize, useEventListener } from '@vueuse/core'
 
 const editorStore = useEditorStore()
 const pagesStore = usePagesStore()
-const { nodes } = storeToRefs(editorStore)
+const { currentNodes: nodes } = storeToRefs(editorStore)
 
 /** 当前页面的编辑器尺寸 */
 const editorWidth = computed(() => pagesStore.activePage?.editorWidth ?? 600)
@@ -250,103 +250,105 @@ onMounted(() => {
 
 <template>
   <div class="flex-1 flex flex-col overflow-hidden">
-    <!-- 画布工具栏 -->
-    <header
-      class="bg-elevated h-12 border-b border-default flex items-center justify-between px-4 shrink-0"
-    >
-      <!-- 左侧：1:1 按钮 -->
-      <UButton
-        icon="i-lucide-expand"
-        variant="ghost"
-        color="neutral"
-        size="sm"
-        @click="resetToOneToOne"
+    <ClientOnly>
+      <!-- 画布工具栏 -->
+      <header
+        class="bg-elevated h-12 border-b border-default flex items-center justify-between px-4 shrink-0"
       >
-        1:1
-      </UButton>
+        <!-- 左侧：1:1 按钮 -->
+        <UButton
+          icon="i-lucide-expand"
+          variant="ghost"
+          color="neutral"
+          size="sm"
+          @click="resetToOneToOne"
+        >
+          1:1
+        </UButton>
 
-      <!-- 右侧：宽高输入框 -->
-      <div class="flex items-center gap-2">
-        <div class="flex items-center gap-1">
-          <span class="text-xs text-muted-foreground">W</span>
-          <UInput
-            :model-value="editorWidth"
-            type="number"
-            size="xs"
-            class="w-20"
-            @update:model-value="(v) => pagesStore.setCurrentEditorWidth(Number(v))"
-          />
-        </div>
-        <span class="text-xs text-muted-foreground">×</span>
-        <div class="flex items-center gap-1">
-          <span class="text-xs text-muted-foreground">H</span>
-          <UInput
-            :model-value="editorHeight"
-            type="number"
-            size="xs"
-            class="w-20"
-            @update:model-value="(v) => pagesStore.setCurrentEditorHeight(Number(v))"
-          />
-        </div>
-      </div>
-    </header>
-
-    <!-- 画布区域 -->
-    <main
-      ref="canvasRef"
-      class="flex-1 bg-muted/99 overflow-hidden relative cursor-grab active:cursor-grabbing select-none dark:bg-muted/10"
-      @mousedown="handleMouseDown"
-      @wheel.prevent="handleWheel"
-    >
-      <!-- 视口容器 -->
-      <div
-        ref="viewportRef"
-        class="viewport-container absolute top-0 left-0 bg-white"
-        :style="{
-          width: `${editorWidth}px`,
-          height: `${editorHeight}px`,
-          transform: transformStyle,
-          transformOrigin: '0 0',
-          cursor: cursorStyle,
-        }"
-        @mousemove="handleViewportMouseMove"
-        @mouseleave="handleViewportMouseLeave"
-        @mousedown="handleMouseDown"
-        @click.stop="handleCanvasClick"
-      >
-        <!-- 左边缘调整指示器 -->
-        <div
-          class="absolute left-0 top-0 bottom-0 w-2 -ml-1 hover:bg-primary/20 transition-colors"
-          :class="{
-            'bg-primary/40':
-              hoverEdge === 'left' || (resizeState.isResizing && resizeState.edge === 'left'),
-          }"
-        />
-
-        <!-- 右边缘调整指示器 -->
-        <div
-          class="absolute right-0 top-0 bottom-0 w-2 -mr-1 hover:bg-primary/20 transition-colors"
-          :class="{
-            'bg-primary/40':
-              hoverEdge === 'right' || (resizeState.isResizing && resizeState.edge === 'right'),
-          }"
-        />
-
-        <!-- 节点渲染区域 -->
-        <div class="min-h-full">
-          <!-- 空状态提示 -->
-          <div
-            v-if="nodes.length === 0"
-            class="flex flex-col items-center justify-center py-24 text-muted"
-          >
-            <UIcon name="i-lucide-layout" class="size-16 mb-4 opacity-50" />
-            <p class="text-lg font-medium mb-1">画布为空</p>
-            <p class="text-sm">从左侧拖入容器或元素开始设计</p>
+        <!-- 右侧：宽高输入框 -->
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-muted-foreground">W</span>
+            <UInput
+              :model-value="editorWidth"
+              type="number"
+              size="xs"
+              class="w-20"
+              @update:model-value="(v) => pagesStore.setCurrentEditorWidth(Number(v))"
+            />
           </div>
-
-          <!-- TODO: 添加节点渲染和拖拽逻辑 -->
+          <span class="text-xs text-muted-foreground">×</span>
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-muted-foreground">H</span>
+            <UInput
+              :model-value="editorHeight"
+              type="number"
+              size="xs"
+              class="w-20"
+              @update:model-value="(v) => pagesStore.setCurrentEditorHeight(Number(v))"
+            />
+          </div>
         </div>
-      </div>
-    </main>
+      </header>
+
+      <!-- 画布区域 -->
+      <main
+        ref="canvasRef"
+        class="flex-1 bg-muted/99 overflow-hidden relative cursor-grab active:cursor-grabbing select-none dark:bg-muted/10"
+        @mousedown="handleMouseDown"
+        @wheel.prevent="handleWheel"
+      >
+        <!-- 视口容器 -->
+        <div
+          ref="viewportRef"
+          class="viewport-container absolute top-0 left-0 bg-white"
+          :style="{
+            width: `${editorWidth}px`,
+            height: `${editorHeight}px`,
+            transform: transformStyle,
+            transformOrigin: '0 0',
+            cursor: cursorStyle,
+          }"
+          @mousemove="handleViewportMouseMove"
+          @mouseleave="handleViewportMouseLeave"
+          @mousedown="handleMouseDown"
+          @click.stop="handleCanvasClick"
+        >
+          <!-- 左边缘调整指示器 -->
+          <div
+            class="absolute left-0 top-0 bottom-0 w-2 -ml-1 hover:bg-primary/20 transition-colors"
+            :class="{
+              'bg-primary/40':
+                hoverEdge === 'left' || (resizeState.isResizing && resizeState.edge === 'left'),
+            }"
+          />
+
+          <!-- 右边缘调整指示器 -->
+          <div
+            class="absolute right-0 top-0 bottom-0 w-2 -mr-1 hover:bg-primary/20 transition-colors"
+            :class="{
+              'bg-primary/40':
+                hoverEdge === 'right' || (resizeState.isResizing && resizeState.edge === 'right'),
+            }"
+          />
+
+          <!-- 节点渲染区域 -->
+          <div class="min-h-full">
+            <!-- 空状态提示 -->
+            <div
+              v-if="nodes.length === 0"
+              class="flex flex-col items-center justify-center py-24 text-muted"
+            >
+              <UIcon name="i-lucide-layout" class="size-16 mb-4 opacity-50" />
+              <p class="text-lg font-medium mb-1">画布为空</p>
+              <p class="text-sm">从左侧拖入容器或元素开始设计</p>
+            </div>
+
+            <!-- TODO: 添加节点渲染和拖拽逻辑 -->
+          </div>
+        </div>
+      </main>
+    </ClientOnly>
   </div>
 </template>

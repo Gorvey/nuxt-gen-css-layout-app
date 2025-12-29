@@ -2,6 +2,11 @@
 /**
  * CSS 布局生成器主页面
  */
+import AppHeader from './components/AppHeader.vue'
+import LeftPanel from './components/LeftPanel.vue'
+import EditorCanvas from './components/EditorCanvas.vue'
+import RightPanel from './components/RightPanel.vue'
+import CodePreview from './components/CodePreview.vue'
 
 const configStore = useConfigStore()
 const { showLeftPanel, showRightPanel, showCodePreview } = storeToRefs(configStore)
@@ -16,21 +21,21 @@ const panelAreaClass = computed(() => {
   <UApp>
     <div class="h-screen flex flex-col">
       <!-- 顶部导航 -->
-      <LayoutAppHeader />
+      <AppHeader />
 
       <!-- 主体区域 -->
       <div :class="['flex overflow-hidden transition-all duration-200', panelAreaClass]">
         <!-- 左侧面板 -->
         <Transition name="slide-left">
-          <LayoutLeftPanel v-if="showLeftPanel" class="w-72 shrink-0 h-full" />
+          <LeftPanel v-if="showLeftPanel" class="w-72 shrink-0 h-full" />
         </Transition>
 
         <!-- 中间编辑器 -->
-        <LayoutEditorCanvas class="flex-1" />
+        <EditorCanvas class="flex-1" />
 
         <!-- 右侧面板 -->
         <Transition name="slide-right">
-          <LayoutRightPanel v-if="showRightPanel" class="w-72 shrink-0" />
+          <RightPanel v-if="showRightPanel" class="w-72 shrink-0" />
         </Transition>
       </div>
 

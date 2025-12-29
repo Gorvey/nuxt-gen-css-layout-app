@@ -16,8 +16,27 @@ export const useSelectionStore = defineStore('selection', () => {
    * 当前选中的节点
    */
   const selectedNode = computed<DSLNode | null>(() => {
-    // TODO: 实现获取选中节点逻辑
-    return null
+    if (!selectedId.value) return null
+    const editorStore = useEditorStore()
+    const nodes = editorStore.currentNodes
+
+    /**
+     * 递归查找节点
+     * @param nodeArray - 节点数组
+     * @returns 找到的节点或 null
+     */
+    function findNode(nodeArray: DSLNode[]): DSLNode | null {
+      for (const node of nodeArray) {
+        if (node.id === selectedId.value) return node
+        if (node.type === 'container' && node.children.length > 0) {
+          const found = findNode(node.children)
+          if (found) return found
+        }
+      }
+      return null
+    }
+
+    return findNode(nodes)
   })
 
   /**
