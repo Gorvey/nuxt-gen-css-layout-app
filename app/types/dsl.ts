@@ -12,26 +12,6 @@ export type ContainerLayout = 'flex' | 'grid' | 'block'
 /** 元素类型 */
 export type ElementType = 'text' | 'image' | 'button' | 'tag' | 'divider' | 'icon'
 
-/** 预设尺寸值 */
-export type SizePreset =
-  | 'auto'
-  | 'full'
-  | '1/2'
-  | '1/3'
-  | '1/4'
-  | 'xs'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | '2xl'
-
-/** 预设间距值 */
-export type SpacingPreset = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-
-/** 预设圆角值 */
-export type RadiusPreset = 'none' | 'sm' | 'md' | 'lg' | 'full'
-
 /** 预设颜色值 */
 export type ColorPreset = 'transparent' | 'white' | 'gray' | 'primary' | 'secondary'
 
@@ -57,18 +37,18 @@ export type FlexAlign = 'start' | 'center' | 'end' | 'stretch'
  * 通用样式配置
  */
 export interface StyleConfig {
-  /** 宽度 */
-  width?: SizePreset
-  /** 高度 */
-  height?: SizePreset
+  /** 宽度（像素值） */
+  width?: number
+  /** 高度（像素值） */
+  height?: number
   /** 内边距（支持预设值或自定义像素值） */
-  padding?: SpacingPreset | number
+  padding?: number
   /** 外边距 */
-  margin?: SpacingPreset
+  margin?: number
   /** 背景颜色 */
   backgroundColor?: ColorPreset
   /** 圆角（支持预设值或自定义像素值） */
-  borderRadius?: RadiusPreset | number
+  borderRadius?: number
   /** Flex 子项配置 */
   flexItem?: FlexItemConfig
 }
@@ -99,7 +79,7 @@ export interface FlexLayoutConfig {
   /** 交叉轴对齐 */
   align: FlexAlign
   /** 间距 */
-  gap: SpacingPreset
+  gap: number
 }
 
 /**

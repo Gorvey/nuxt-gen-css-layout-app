@@ -4,10 +4,7 @@
  */
 
 import type {
-  SpacingPreset,
-  RadiusPreset,
   ColorPreset,
-  SizePreset,
   FlexDirection,
   FlexJustify,
   FlexAlign,
@@ -16,26 +13,6 @@ import type {
   FlexBasis,
 } from '~/types/dsl'
 
-/** 间距预设映射 */
-export const SPACING_MAP: Record<SpacingPreset, string> = {
-  none: '0',
-  xs: '1',
-  sm: '2',
-  md: '4',
-  lg: '6',
-  xl: '8',
-  '2xl': '12',
-}
-
-/** 圆角预设映射 */
-export const RADIUS_MAP: Record<RadiusPreset, string> = {
-  none: 'none',
-  sm: 'sm',
-  md: 'lg',
-  lg: 'xl',
-  full: 'full',
-}
-
 /** 颜色预设映射 */
 export const COLOR_MAP: Record<ColorPreset, string> = {
   transparent: 'transparent',
@@ -43,21 +20,6 @@ export const COLOR_MAP: Record<ColorPreset, string> = {
   gray: 'gray-100',
   primary: 'primary-500',
   secondary: 'gray-500',
-}
-
-/** 尺寸预设映射 */
-export const SIZE_MAP: Record<SizePreset, string> = {
-  auto: 'auto',
-  full: 'full',
-  '1/2': '1/2',
-  '1/3': '1/3',
-  '1/4': '1/4',
-  xs: '8',
-  sm: '16',
-  md: '32',
-  lg: '48',
-  xl: '64',
-  '2xl': '96',
 }
 
 /** Flex 方向映射 */
@@ -109,8 +71,8 @@ export const FLEX_BASIS_MAP: Record<FlexBasis, string> = {
  * @param value - 间距预设值
  * @returns Tailwind 类名
  */
-export function getPaddingClass(value: SpacingPreset): string {
-  return `p-${SPACING_MAP[value]}`
+export function getPaddingClass(value: number): string {
+  return `p-[${value}px]`
 }
 
 /**
@@ -118,9 +80,9 @@ export function getPaddingClass(value: SpacingPreset): string {
  * @param value - 圆角预设值
  * @returns Tailwind 类名
  */
-export function getBorderRadiusClass(value: RadiusPreset): string {
-  if (value === 'none') return 'rounded-none'
-  return `rounded-${RADIUS_MAP[value]}`
+export function getBorderRadiusClass(value: number): string {
+  if (value === 0) return 'rounded-none'
+  return `rounded-[${value}px]`
 }
 
 /**
@@ -134,21 +96,21 @@ export function getBackgroundColorClass(value: ColorPreset): string {
 }
 
 /**
- * 生成宽度类名
- * @param value - 尺寸预设值
+ * 生成宽度类名（像素值）
+ * @param value - 宽度像素值
  * @returns Tailwind 类名
  */
-export function getWidthClass(value: SizePreset): string {
-  return `w-${SIZE_MAP[value]}`
+export function getWidthClass(value: number): string {
+  return `w-[${value}px]`
 }
 
 /**
- * 生成高度类名
- * @param value - 尺寸预设值
+ * 生成高度类名（像素值）
+ * @param value - 高度像素值
  * @returns Tailwind 类名
  */
-export function getHeightClass(value: SizePreset): string {
-  return `h-${SIZE_MAP[value]}`
+export function getHeightClass(value: number): string {
+  return `h-[${value}px]`
 }
 
 /**
@@ -156,8 +118,8 @@ export function getHeightClass(value: SizePreset): string {
  * @param value - 间距预设值
  * @returns Tailwind 类名
  */
-export function getGapClass(value: SpacingPreset): string {
-  return `gap-${SPACING_MAP[value]}`
+export function getGapClass(value: number): string {
+  return `gap-[${value}px]`
 }
 
 /**

@@ -1,16 +1,15 @@
 /**
- * 节点选中状态管理 Hook
+ * 节点选中状态管理 Store
  * 管理当前选中的节点
  */
 
 import type { DSLNode } from '~/types/dsl'
 
 /**
- * 节点选中状态管理
- * @returns 选中状态和操作方法
+ * 节点选中状态管理 Store
  */
-export function useSelection() {
-  /** 选中状态（单例） */
+export const useSelectionStore = defineStore('selection', () => {
+  /** 选中的节点 ID */
   const selectedId = ref<string | null>(null)
 
   /**
@@ -58,11 +57,16 @@ export function useSelection() {
   }
 
   return {
-    selectedId: readonly(selectedId),
+    selectedId,
     selectedNode,
     select,
     deselect,
     toggle,
     isSelected,
   }
-}
+})
+
+/**
+ * 选中状态 Store 类型导出
+ */
+export type SelectionStore = ReturnType<typeof useSelectionStore>

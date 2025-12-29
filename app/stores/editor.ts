@@ -1,5 +1,5 @@
 /**
- * 编辑器核心状态管理 Hook
+ * 编辑器核心状态管理 Store
  * 管理 DSL 节点树的增删改查
  */
 
@@ -14,11 +14,10 @@ import type {
 } from '~/types/dsl'
 
 /**
- * 编辑器核心状态管理
- * @returns 编辑器状态和操作方法
+ * 编辑器 Store
  */
-export function useEditor() {
-  /** 编辑器状态（单例） - 顶层节点列表 */
+export const useEditorStore = defineStore('editor', () => {
+  /** 顶层节点列表 */
   const nodes = ref<DSLNode[]>([])
 
   /**
@@ -74,4 +73,9 @@ export function useEditor() {
     updateNodeStyles,
     updateLayoutConfig,
   }
-}
+})
+
+/**
+ * 编辑器 Store 类型导出
+ */
+export type EditorStore = ReturnType<typeof useEditorStore>

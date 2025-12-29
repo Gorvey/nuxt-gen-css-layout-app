@@ -3,7 +3,8 @@
  * 右侧配置面板组件
  */
 
-const { selectedNode } = useSelection()
+const selectionStore = useSelectionStore()
+const { selectedNode } = storeToRefs(selectionStore)
 </script>
 
 <template>

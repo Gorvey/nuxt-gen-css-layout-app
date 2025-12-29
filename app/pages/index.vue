@@ -21,6 +21,9 @@
         <!-- 右侧面板 -->
         <LayoutRightPanel class="w-72 shrink-0" />
       </div>
+
+      <!-- 代码预览弹窗 -->
+      <CodePreview />
     </div>
   </UApp>
 </template>
