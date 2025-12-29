@@ -1,5 +1,14 @@
+import { codeInspectorPlugin } from 'code-inspector-plugin'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  vite: {
+    plugins: [
+      codeInspectorPlugin({
+        bundler: 'vite'
+      })
+    ]
+  },
   modules: ['@nuxt/eslint', '@nuxt/ui'],
 
   devtools: {
