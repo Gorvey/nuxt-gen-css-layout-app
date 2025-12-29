@@ -3,7 +3,18 @@
  * 将 DSL 中的预设值转换为 Tailwind 类名
  */
 
-import type { SpacingPreset, RadiusPreset, ColorPreset, SizePreset, FlexDirection, FlexJustify, FlexAlign, FlexGrow, FlexShrink, FlexBasis } from '~/types/dsl'
+import type {
+  SpacingPreset,
+  RadiusPreset,
+  ColorPreset,
+  SizePreset,
+  FlexDirection,
+  FlexJustify,
+  FlexAlign,
+  FlexGrow,
+  FlexShrink,
+  FlexBasis,
+} from '~/types/dsl'
 
 /** 间距预设映射 */
 export const SPACING_MAP: Record<SpacingPreset, string> = {
@@ -13,7 +24,7 @@ export const SPACING_MAP: Record<SpacingPreset, string> = {
   md: '4',
   lg: '6',
   xl: '8',
-  '2xl': '12'
+  '2xl': '12',
 }
 
 /** 圆角预设映射 */
@@ -22,7 +33,7 @@ export const RADIUS_MAP: Record<RadiusPreset, string> = {
   sm: 'sm',
   md: 'lg',
   lg: 'xl',
-  full: 'full'
+  full: 'full',
 }
 
 /** 颜色预设映射 */
@@ -31,7 +42,7 @@ export const COLOR_MAP: Record<ColorPreset, string> = {
   white: 'white',
   gray: 'gray-100',
   primary: 'primary-500',
-  secondary: 'gray-500'
+  secondary: 'gray-500',
 }
 
 /** 尺寸预设映射 */
@@ -46,13 +57,13 @@ export const SIZE_MAP: Record<SizePreset, string> = {
   md: '32',
   lg: '48',
   xl: '64',
-  '2xl': '96'
+  '2xl': '96',
 }
 
 /** Flex 方向映射 */
 export const FLEX_DIRECTION_MAP: Record<FlexDirection, string> = {
   row: 'row',
-  column: 'col'
+  column: 'col',
 }
 
 /** Flex 主轴对齐映射 */
@@ -61,7 +72,7 @@ export const FLEX_JUSTIFY_MAP: Record<FlexJustify, string> = {
   center: 'center',
   end: 'end',
   between: 'between',
-  around: 'around'
+  around: 'around',
 }
 
 /** Flex 交叉轴对齐映射 */
@@ -69,7 +80,7 @@ export const FLEX_ALIGN_MAP: Record<FlexAlign, string> = {
   start: 'start',
   center: 'center',
   end: 'end',
-  stretch: 'stretch'
+  stretch: 'stretch',
 }
 
 /**
@@ -166,14 +177,7 @@ export function getFlexAlignClass(value: FlexAlign): string {
 
 /** 左侧面板可拖拽项定义 */
 export const DRAGGABLE_CONTAINERS = [
-  { type: 'flex' as const, label: 'Flex 容器', icon: 'i-lucide-layout-grid' }
-] as const
-
-/** Root 布局类型（点击切换） */
-export const ROOT_LAYOUT_TYPES = [
-  { type: 'flex' as const, label: 'Flex 布局', icon: 'i-lucide-layout-grid' },
-  { type: 'grid' as const, label: 'Grid 布局', icon: 'i-lucide-grid' },
-  { type: 'block' as const, label: 'Block 布局', icon: 'i-lucide-square' }
+  { type: 'flex' as const, label: 'Flex 容器', icon: 'i-lucide-layout-grid' },
 ] as const
 
 export const DRAGGABLE_ELEMENTS = [
@@ -182,19 +186,19 @@ export const DRAGGABLE_ELEMENTS = [
   { type: 'button' as const, label: '按钮', icon: 'i-lucide-square' },
   { type: 'tag' as const, label: '标签', icon: 'i-lucide-tag' },
   { type: 'icon' as const, label: '图标', icon: 'i-lucide-star' },
-  { type: 'divider' as const, label: '分割线', icon: 'i-lucide-minus' }
+  { type: 'divider' as const, label: '分割线', icon: 'i-lucide-minus' },
 ] as const
 
 /** Flex grow 值映射 */
 export const FLEX_GROW_MAP: Record<FlexGrow, string> = {
   0: '0',
-  1: '1'
+  1: '1',
 }
 
 /** Flex shrink 值映射 */
 export const FLEX_SHRINK_MAP: Record<FlexShrink, string> = {
   0: '0',
-  1: '1'
+  1: '1',
 }
 
 /** Flex basis 值映射 */
@@ -203,7 +207,7 @@ export const FLEX_BASIS_MAP: Record<FlexBasis, string> = {
   full: 'full',
   '1/2': '1/2',
   '1/3': '1/3',
-  '1/4': '1/4'
+  '1/4': '1/4',
 }
 
 /**

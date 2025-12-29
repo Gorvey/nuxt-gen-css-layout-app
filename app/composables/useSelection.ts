@@ -65,6 +65,6 @@ export function useSelection() {
     select,
     deselect,
     toggle,
-    isSelected
+    isSelected,
   }
 }

@@ -23,20 +23,13 @@ import {
 const props = defineProps<{
   /** 要渲染的节点 */
   node: DSLNode
-  /** 是否为 Root 容器 */
-  isRoot?: boolean
 }>()
 
-const { findNode, removeNode, findParent, moveNode, rootContainer } = useEditor()
+const { findNode, removeNode, findParent, moveNode } = useEditor()
 const { isSelected, select, deselect } = useSelection()
-
-/** 是否为 Root 容器 */
-const isRootContainer = computed(() => props.isRoot || props.node.id === rootContainer.value.id)
 
 /** 父节点是否为 flex 容器 */
 const isInFlexContainer = computed(() => {
-  // Root 容器不在任何容器内
-  if (isRootContainer.value) return false
   const parent = findParent(props.node.id)
   return parent && parent.layout === 'flex'
 })
@@ -60,14 +53,24 @@ const containerNode = computed(() => {
 function getContainerWrapperClasses(node: ContainerNode): string[] {
   const classes: string[] = ['relative border-2 transition-colors cursor-pointer']
 
-  if (node.styles.padding && node.styles.padding !== 'none') {
-    classes.push(getPaddingClass(node.styles.padding))
+  // 处理 padding（支持预设值或自定义像素值）
+  if (node.styles.padding) {
+    if (typeof node.styles.padding === 'number') {
+      classes.push(`p-[${node.styles.padding}px]`)
+    } else if (node.styles.padding !== 'none') {
+      classes.push(getPaddingClass(node.styles.padding))
+    }
   }
   if (node.styles.backgroundColor && node.styles.backgroundColor !== 'transparent') {
     classes.push(getBackgroundColorClass(node.styles.backgroundColor))
   }
-  if (node.styles.borderRadius && node.styles.borderRadius !== 'none') {
-    classes.push(getBorderRadiusClass(node.styles.borderRadius))
+  // 处理 borderRadius（支持预设值或自定义像素值）
+  if (node.styles.borderRadius) {
+    if (typeof node.styles.borderRadius === 'number') {
+      classes.push(`rounded-[${node.styles.borderRadius}px]`)
+    } else if (node.styles.borderRadius !== 'none') {
+      classes.push(getBorderRadiusClass(node.styles.borderRadius))
+    }
   }
 
   // 如果在 flex 容器内,处理 flexItem 配置
@@ -112,14 +115,24 @@ function getContainerDraggableClasses(node: ContainerNode): string[] {
 function getElementClasses(node: ElementNode): string[] {
   const classes: string[] = []
 
-  if (node.styles.padding && node.styles.padding !== 'none') {
-    classes.push(getPaddingClass(node.styles.padding))
+  // 处理 padding（支持预设值或自定义像素值）
+  if (node.styles.padding) {
+    if (typeof node.styles.padding === 'number') {
+      classes.push(`p-[${node.styles.padding}px]`)
+    } else if (node.styles.padding !== 'none') {
+      classes.push(getPaddingClass(node.styles.padding))
+    }
   }
   if (node.styles.backgroundColor && node.styles.backgroundColor !== 'transparent') {
     classes.push(getBackgroundColorClass(node.styles.backgroundColor))
   }
-  if (node.styles.borderRadius && node.styles.borderRadius !== 'none') {
-    classes.push(getBorderRadiusClass(node.styles.borderRadius))
+  // 处理 borderRadius（支持预设值或自定义像素值）
+  if (node.styles.borderRadius) {
+    if (typeof node.styles.borderRadius === 'number') {
+      classes.push(`rounded-[${node.styles.borderRadius}px]`)
+    } else if (node.styles.borderRadius !== 'none') {
+      classes.push(getBorderRadiusClass(node.styles.borderRadius))
+    }
   }
 
   // 如果在 flex 容器内,处理 flexItem 配置
@@ -180,12 +193,12 @@ function handleMove(event: DragChangeEvent) {
     :class="[
       ...getContainerWrapperClasses(node as ContainerNode),
       selected ? 'border-primary' : 'border-dashed border-default hover:border-muted',
-      isRootContainer && 'min-h-64',
+      'min-h-32',
     ]"
     @click="handleClick"
   >
-    <!-- 选中时显示操作按钮（Root 容器不显示删除按钮） -->
-    <div v-if="selected && !isRootContainer" class="absolute -bottom-9 left-0 z-10 flex gap-1">
+    <!-- 选中时显示操作按钮 -->
+    <div v-if="selected" class="absolute -bottom-9 left-0 z-10 flex gap-1">
       <UButton
         icon="i-lucide-trash-2"
         size="xs"
@@ -213,7 +226,7 @@ function handleMove(event: DragChangeEvent) {
       v-if="containerNode.children.length === 0"
       class="absolute inset-0 flex items-center justify-center text-muted text-sm pointer-events-none"
     >
-      {{ isRootContainer ? '从左侧拖入元素或容器' : '拖入元素或容器' }}
+      拖入元素或容器
     </div>
   </div>
 

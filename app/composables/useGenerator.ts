@@ -3,7 +3,13 @@
  * 将 DSL 节点树转换为 Tailwind HTML 代码
  */
 
-import type { DSLNode, ContainerNode, ElementNode, StyleConfig, FlexLayoutConfig } from '~/types/dsl'
+import type {
+  DSLNode,
+  ContainerNode,
+  ElementNode,
+  StyleConfig,
+  FlexLayoutConfig,
+} from '~/types/dsl'
 import { isContainerNode } from '~/types/dsl'
 import {
   getPaddingClass,
@@ -17,7 +23,7 @@ import {
   getGapClass,
   getFlexGrowClass,
   getFlexShrinkClass,
-  getFlexBasisClass
+  getFlexBasisClass,
 } from '~/constants/presets'
 
 /**
@@ -35,19 +41,34 @@ function generateStyleClasses(styles: StyleConfig, isInFlexContainer = false): s
   if (styles.height) {
     classes.push(getHeightClass(styles.height))
   }
-  if (styles.padding && styles.padding !== 'none') {
-    classes.push(getPaddingClass(styles.padding))
+  // 处理 padding（支持预设值或自定义像素值）
+  if (styles.padding) {
+    if (typeof styles.padding === 'number') {
+      classes.push(`p-[${styles.padding}px]`)
+    } else if (styles.padding !== 'none') {
+      classes.push(getPaddingClass(styles.padding))
+    }
   }
   if (styles.backgroundColor && styles.backgroundColor !== 'transparent') {
     classes.push(getBackgroundColorClass(styles.backgroundColor))
   }
-  if (styles.borderRadius && styles.borderRadius !== 'none') {
-    classes.push(getBorderRadiusClass(styles.borderRadius))
+  // 处理 borderRadius（支持预设值或自定义像素值）
+  if (styles.borderRadius) {
+    if (typeof styles.borderRadius === 'number') {
+      classes.push(`rounded-[${styles.borderRadius}px]`)
+    } else if (styles.borderRadius !== 'none') {
+      classes.push(getBorderRadiusClass(styles.borderRadius))
+    }
   }
 
   // 如果在 flex 容器内,处理 flexItem 配置
   if (isInFlexContainer) {
-    const flexItem = styles.flexItem || { grow: 0, shrink: 1, basis: 'auto' as const, width: 'full' as const }
+    const flexItem = styles.flexItem || {
+      grow: 0,
+      shrink: 1,
+      basis: 'auto' as const,
+      width: 'full' as const,
+    }
     classes.push(getFlexGrowClass(flexItem.grow))
     classes.push(getFlexShrinkClass(flexItem.shrink))
     classes.push(getFlexBasisClass(flexItem.basis))
@@ -86,7 +107,11 @@ function generateFlexClasses(config: FlexLayoutConfig): string[] {
  * @param parentIsFlexContainer - 父容器是否为 flex 容器
  * @returns HTML 字符串
  */
-function generateContainerHTML(node: ContainerNode, indent: number = 0, parentIsFlexContainer = false): string {
+function generateContainerHTML(
+  node: ContainerNode,
+  indent: number = 0,
+  parentIsFlexContainer = false
+): string {
   const indentStr = '  '.repeat(indent)
   const classes: string[] = []
 
@@ -103,7 +128,7 @@ function generateContainerHTML(node: ContainerNode, indent: number = 0, parentIs
   }
 
   const childrenHTML = node.children
-    .map(child => generateNodeHTML(child, indent + 1, node.layout === 'flex'))
+    .map((child) => generateNodeHTML(child, indent + 1, node.layout === 'flex'))
     .join('\n')
 
   return `${indentStr}<div${classStr}>\n${childrenHTML}\n${indentStr}</div>`
@@ -116,7 +141,11 @@ function generateContainerHTML(node: ContainerNode, indent: number = 0, parentIs
  * @param parentIsFlexContainer - 父容器是否为 flex 容器
  * @returns HTML 字符串
  */
-function generateElementHTML(node: ElementNode, indent: number = 0, parentIsFlexContainer = false): string {
+function generateElementHTML(
+  node: ElementNode,
+  indent: number = 0,
+  parentIsFlexContainer = false
+): string {
   const indentStr = '  '.repeat(indent)
   const classes = generateStyleClasses(node.styles, parentIsFlexContainer)
 
@@ -130,13 +159,35 @@ function generateElementHTML(node: ElementNode, indent: number = 0, parentIsFlex
       return `${indentStr}<div class="${imageClasses.join(' ')}"></div>`
     }
     case 'button': {
-      const buttonClasses = ['px-4', 'py-2', 'bg-primary-500', 'text-white', 'rounded', 'text-sm', 'inline-flex', 'items-center', 'gap-2', ...classes]
+      const buttonClasses = [
+        'px-4',
+        'py-2',
+        'bg-primary-500',
+        'text-white',
+        'rounded',
+        'text-sm',
+        'inline-flex',
+        'items-center',
+        'gap-2',
+        ...classes,
+      ]
       return `${indentStr}<button class="${buttonClasses.join(' ')}">
 ${indentStr}  <span>按钮</span>
 ${indentStr}</button>`
     }
     case 'tag': {
-      const tagClasses = ['px-3', 'py-1', 'bg-primary-500/10', 'text-primary-500', 'rounded-full', 'text-sm', 'inline-flex', 'items-center', 'gap-1.5', ...classes]
+      const tagClasses = [
+        'px-3',
+        'py-1',
+        'bg-primary-500/10',
+        'text-primary-500',
+        'rounded-full',
+        'text-sm',
+        'inline-flex',
+        'items-center',
+        'gap-1.5',
+        ...classes,
+      ]
       return `${indentStr}<span class="${tagClasses.join(' ')}">Tag</span>`
     }
     case 'icon': {
@@ -163,7 +214,11 @@ ${indentStr}</div>`
  * @param parentIsFlexContainer - 父容器是否为 flex 容器
  * @returns HTML 字符串
  */
-function generateNodeHTML(node: DSLNode, indent: number = 0, parentIsFlexContainer = false): string {
+function generateNodeHTML(
+  node: DSLNode,
+  indent: number = 0,
+  parentIsFlexContainer = false
+): string {
   if (isContainerNode(node)) {
     return generateContainerHTML(node, indent, parentIsFlexContainer)
   }
@@ -186,12 +241,10 @@ export function useGenerator() {
       return '<!-- 没有节点 -->'
     }
 
-    return nodes.value
-      .map(node => generateNodeHTML(node as DSLNode, 0))
-      .join('\n\n')
+    return nodes.value.map((node) => generateNodeHTML(node as DSLNode, 0)).join('\n\n')
   }
 
   return {
-    generateTailwind
+    generateTailwind,
   }
 }

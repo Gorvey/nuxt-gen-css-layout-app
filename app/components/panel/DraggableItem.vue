@@ -16,9 +16,10 @@ defineProps<{
 <template>
   <div
     class="flex items-center gap-3 p-3 rounded-lg border transition-colors"
-    :class="isActive
-      ? 'border-primary bg-primary/5 cursor-default'
-      : 'border-default bg-default hover:bg-elevated cursor-grab active:cursor-grabbing'
+    :class="
+      isActive
+        ? 'border-primary bg-primary/5 cursor-default'
+        : 'border-default bg-default hover:bg-elevated cursor-grab active:cursor-grabbing'
     "
   >
     <UIcon :name="icon" class="size-5" :class="isActive ? 'text-primary' : 'text-muted'" />

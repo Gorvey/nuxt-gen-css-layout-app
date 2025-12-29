@@ -3,16 +3,23 @@
  * 顶部导航组件
  */
 
+defineProps<{
+  /** 代码预览浮层开关状态 */
+  codePanelOpen: boolean
+}>()
+
 defineEmits<{
-  /** 点击生成代码按钮 */
-  generate: []
+  /** 更新代码预览浮层开关状态 */
+  'update:codePanelOpen': [value: boolean]
 }>()
 
 const { canvasWidth, setWidth } = useCanvasWidth()
 </script>
 
 <template>
-  <header class="h-14 shrink-0 border-b border-default bg-default flex items-center justify-between px-4">
+  <header
+    class="h-14 shrink-0 border-b border-default bg-default flex items-center justify-between px-4"
+  >
     <!-- 左侧 Logo -->
     <div class="flex items-center gap-2">
       <UIcon name="i-lucide-layout-grid" class="size-6 text-primary" />
@@ -39,9 +46,10 @@ const { canvasWidth, setWidth } = useCanvasWidth()
     <div class="flex items-center gap-2">
       <UColorModeButton />
       <UButton
-        icon="i-lucide-code"
-        label="生成代码"
-        @click="$emit('generate')"
+        :icon="codePanelOpen ? 'i-lucide-eye-off' : 'i-lucide-code'"
+        :label="codePanelOpen ? '隐藏代码' : '代码预览'"
+        :color="codePanelOpen ? 'primary' : 'neutral'"
+        @click="$emit('update:codePanelOpen', !codePanelOpen)"
       />
     </div>
   </header>

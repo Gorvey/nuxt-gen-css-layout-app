@@ -36,7 +36,7 @@ const spacingOptions: OptionItem[] = [
   { label: 'MD', value: 'md' },
   { label: 'LG', value: 'lg' },
   { label: 'XL', value: 'xl' },
-  { label: '2XL', value: '2xl' }
+  { label: '2XL', value: '2xl' },
 ]
 
 /** 圆角选项 */
@@ -45,7 +45,7 @@ const radiusOptions: OptionItem[] = [
   { label: 'SM', value: 'sm' },
   { label: 'MD', value: 'md' },
   { label: 'LG', value: 'lg' },
-  { label: 'Full', value: 'full' }
+  { label: 'Full', value: 'full' },
 ]
 
 /** 颜色选项 */
@@ -54,13 +54,13 @@ const colorOptions: OptionItem[] = [
   { label: 'White', value: 'white' },
   { label: 'Gray', value: 'gray' },
   { label: 'Primary', value: 'primary' },
-  { label: 'Secondary', value: 'secondary' }
+  { label: 'Secondary', value: 'secondary' },
 ]
 
 /** Flex 方向选项 */
 const directionOptions: OptionItem[] = [
   { label: 'Row', value: 'row', icon: 'i-heroicons-arrows-right-left' },
-  { label: 'Column', value: 'column', icon: 'i-heroicons-arrows-up-down' }
+  { label: 'Column', value: 'column', icon: 'i-heroicons-arrows-up-down' },
 ]
 
 /** 主轴对齐选项 */
@@ -69,7 +69,7 @@ const justifyOptions: OptionItem[] = [
   { label: 'Center', value: 'center', icon: 'i-heroicons-arrows-pointing-in' },
   { label: 'End', value: 'end', icon: 'i-heroicons-arrow-right' },
   { label: 'Between', value: 'between', icon: 'i-heroicons-arrows-pointing-out' },
-  { label: 'Around', value: 'around', icon: 'i-heroicons-squares-plus' }
+  { label: 'Around', value: 'around', icon: 'i-heroicons-squares-plus' },
 ]
 
 /** 交叉轴对齐选项 */
@@ -77,19 +77,19 @@ const alignOptions: OptionItem[] = [
   { label: 'Start', value: 'start', icon: 'i-heroicons-arrow-up' },
   { label: 'Center', value: 'center', icon: 'i-heroicons-arrows-pointing-in' },
   { label: 'End', value: 'end', icon: 'i-heroicons-arrow-down' },
-  { label: 'Stretch', value: 'stretch', icon: 'i-heroicons-arrows-pointing-out' }
+  { label: 'Stretch', value: 'stretch', icon: 'i-heroicons-arrows-pointing-out' },
 ]
 
 /** Flex grow 选项 */
 const flexGrowOptions: OptionItem[] = [
   { label: '0', value: '0' },
-  { label: '1', value: '1' }
+  { label: '1', value: '1' },
 ]
 
 /** Flex shrink 选项 */
 const flexShrinkOptions: OptionItem[] = [
   { label: '0', value: '0' },
-  { label: '1', value: '1' }
+  { label: '1', value: '1' },
 ]
 
 /** Flex basis 选项 */
@@ -98,13 +98,13 @@ const flexBasisOptions: OptionItem[] = [
   { label: 'Full', value: 'full' },
   { label: '1/2', value: '1/2' },
   { label: '1/3', value: '1/3' },
-  { label: '1/4', value: '1/4' }
+  { label: '1/4', value: '1/4' },
 ]
 
 /** Flex 宽度选项 */
 const flexWidthOptions: OptionItem[] = [
   { label: 'Auto', value: 'auto' },
-  { label: 'Full', value: 'full' }
+  { label: 'Full', value: 'full' },
 ]
 
 /**
@@ -112,9 +112,48 @@ const flexWidthOptions: OptionItem[] = [
  * @param key - 样式键
  * @param value - 样式值
  */
-function handleStyleChange(key: string, value: string) {
+function handleStyleChange(key: string, value: string | number) {
   updateNodeStyles(props.node.id, { [key]: value })
 }
+
+/**
+ * 获取自定义 padding 值（当不是预设值时返回数字）
+ */
+const customPadding = computed({
+  get: () => {
+    const value = props.node.styles.padding
+    if (typeof value === 'number') return value
+    // 如果是预设值，返回 0
+    return 0
+  },
+  set: (value: number) => {
+    handleStyleChange('padding', value)
+  },
+})
+
+/**
+ * 获取自定义 borderRadius 值（当不是预设值时返回数字）
+ */
+const customBorderRadius = computed({
+  get: () => {
+    const value = props.node.styles.borderRadius
+    if (typeof value === 'number') return value
+    return 0
+  },
+  set: (value: number) => {
+    handleStyleChange('borderRadius', value)
+  },
+})
+
+/**
+ * 判断 padding 是否为自定义数字值
+ */
+const isCustomPadding = computed(() => typeof props.node.styles.padding === 'number')
+
+/**
+ * 判断 borderRadius 是否为自定义数字值
+ */
+const isCustomBorderRadius = computed(() => typeof props.node.styles.borderRadius === 'number')
 
 /**
  * 更新布局配置
@@ -143,7 +182,7 @@ function getFlexItemConfig(): FlexItemConfig {
  */
 function handleFlexItemChange(key: keyof FlexItemConfig, value: string | number) {
   updateNodeStyles(props.node.id, {
-    flexItem: { ...getFlexItemConfig(), [key]: value }
+    flexItem: { ...getFlexItemConfig(), [key]: value },
   })
 }
 
@@ -154,7 +193,7 @@ const elementTypeLabels: Record<string, string> = {
   button: '按钮元素',
   tag: '标签元素',
   icon: '图标元素',
-  divider: '分割线元素'
+  divider: '分割线元素',
 }
 
 /** 当前元素类型标签 */
@@ -179,9 +218,7 @@ const elementTypeLabel = computed(() => {
 
     <!-- Flex 布局配置（仅容器） -->
     <div v-if="isContainer && (node as any).layout === 'flex'" class="space-y-4">
-      <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">
-        Layout Config
-      </h4>
+      <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">Layout Config</h4>
 
       <!-- 方向 -->
       <div class="space-y-1.5">
@@ -259,9 +296,7 @@ const elementTypeLabel = computed(() => {
 
     <!-- Flex 子元素配置（仅在 flex 容器内显示） -->
     <div v-if="isInFlexContainer" class="space-y-4">
-      <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">
-        Flex Item Config
-      </h4>
+      <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">Flex Item Config</h4>
 
       <!-- flex-grow -->
       <div class="space-y-1.5">
@@ -336,25 +371,12 @@ const elementTypeLabel = computed(() => {
 
     <!-- 通用样式 -->
     <div class="space-y-4">
-      <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">
-        Style Config
-      </h4>
+      <h4 class="text-xs font-semibold text-muted uppercase tracking-wider">Style Config</h4>
 
       <!-- 内边距 -->
       <div class="space-y-1.5">
-        <label class="text-sm text-default">Padding</label>
-        <div class="flex flex-wrap gap-1">
-          <template v-for="option in spacingOptions" :key="option.value">
-            <UButton
-              :variant="(node.styles.padding || 'none') === option.value ? 'solid' : 'outline'"
-              :color="(node.styles.padding || 'none') === option.value ? 'primary' : 'neutral'"
-              size="xs"
-              @click="handleStyleChange('padding', option.value)"
-            >
-              {{ option.label }}
-            </UButton>
-          </template>
-        </div>
+        <label class="text-sm text-default">Padding (px)</label>
+        <UInputNumber v-model="customPadding" :min="0" :max="200" size="sm" class="w-full" />
       </div>
 
       <!-- 背景颜色 -->
@@ -363,8 +385,16 @@ const elementTypeLabel = computed(() => {
         <div class="flex flex-wrap gap-1">
           <template v-for="option in colorOptions" :key="option.value">
             <UButton
-              :variant="(node.styles.backgroundColor || 'transparent') === option.value ? 'solid' : 'outline'"
-              :color="(node.styles.backgroundColor || 'transparent') === option.value ? 'primary' : 'neutral'"
+              :variant="
+                (node.styles.backgroundColor || 'transparent') === option.value
+                  ? 'solid'
+                  : 'outline'
+              "
+              :color="
+                (node.styles.backgroundColor || 'transparent') === option.value
+                  ? 'primary'
+                  : 'neutral'
+              "
               size="xs"
               @click="handleStyleChange('backgroundColor', option.value)"
             >
@@ -376,19 +406,8 @@ const elementTypeLabel = computed(() => {
 
       <!-- 圆角 -->
       <div class="space-y-1.5">
-        <label class="text-sm text-default">Border Radius</label>
-        <div class="flex flex-wrap gap-1">
-          <template v-for="option in radiusOptions" :key="option.value">
-            <UButton
-              :variant="(node.styles.borderRadius || 'none') === option.value ? 'solid' : 'outline'"
-              :color="(node.styles.borderRadius || 'none') === option.value ? 'primary' : 'neutral'"
-              size="xs"
-              @click="handleStyleChange('borderRadius', option.value)"
-            >
-              {{ option.label }}
-            </UButton>
-          </template>
-        </div>
+        <label class="text-sm text-default">Border Radius (px)</label>
+        <UInputNumber v-model="customBorderRadius" :min="0" :max="100" size="sm" class="w-full" />
       </div>
     </div>
   </div>

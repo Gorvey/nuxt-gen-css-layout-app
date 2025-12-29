@@ -5,11 +5,13 @@
 **核心目标**：快速生成 CSS 布局代码片段，帮助前端开发者提升业务开发效率。
 
 **关键约束**：
+
 - 只生成布局结构，不处理业务数据
 - 图片使用占位图，文本使用占位符
 - 生成的是可复制的代码片段，非完整页面
 
 **开发原则**：
+
 - **MVP 优先**：先实现最小可用功能，再迭代增强
 - **Composable 优先**：使用 Vue 3 Composable (hooks) 模式管理状态和逻辑
 - **DSL 由开发者设计**：类型结构在开发过程中确定
@@ -20,32 +22,32 @@
 
 ### 2.1 MVP 包含（必须实现）
 
-| 功能 | 说明 |
-|------|------|
-| 三栏布局 | Header + 左侧面板 + 编辑器 + 右侧面板 |
-| 容器拖拽 | Flex 容器拖入编辑器 |
-| 元素拖拽 | 文本、图片元素拖入容器 |
-| 节点选中 | 点击选中，显示配置 |
-| 基础样式配置 | 间距、背景、边框圆角 |
-| Flex 布局配置 | 方向、对齐方式 |
-| 代码生成 | Tailwind 格式输出 |
-| 复制代码 | 一键复制生成的代码 |
+| 功能          | 说明                                  |
+| ------------- | ------------------------------------- |
+| 三栏布局      | Header + 左侧面板 + 编辑器 + 右侧面板 |
+| 容器拖拽      | Flex 容器拖入编辑器                   |
+| 元素拖拽      | 文本、图片元素拖入容器                |
+| 节点选中      | 点击选中，显示配置                    |
+| 基础样式配置  | 间距、背景、边框圆角                  |
+| Flex 布局配置 | 方向、对齐方式                        |
+| 代码生成      | Tailwind 格式输出                     |
+| 复制代码      | 一键复制生成的代码                    |
 
 ### 2.2 MVP 不包含（后续迭代）
 
-| 功能 | 优先级 |
-|------|--------|
-| Grid 容器 | P1 |
-| Block 容器 | P1 |
-| 按钮、Tag、分割线、图标元素 | P1 |
-| CSS 原生格式输出 | P1 |
-| 预设模板 | P2 |
-| 面板收起/展开 | P2 |
-| 编辑器宽度自定义 | P2 |
-| 节点悬停高亮 | P2 |
-| 键盘删除节点 | P2 |
-| 历史记录 Undo/Redo | P3 |
-| 模板保存 | P3 |
+| 功能                        | 优先级 |
+| --------------------------- | ------ |
+| Grid 容器                   | P1     |
+| Block 容器                  | P1     |
+| 按钮、Tag、分割线、图标元素 | P1     |
+| CSS 原生格式输出            | P1     |
+| 预设模板                    | P2     |
+| 面板收起/展开               | P2     |
+| 编辑器宽度自定义            | P2     |
+| 节点悬停高亮                | P2     |
+| 键盘删除节点                | P2     |
+| 历史记录 Undo/Redo          | P3     |
+| 模板保存                    | P3     |
 
 ---
 
@@ -222,6 +224,7 @@ export function useGenerator() {
 ### 6.1 Tailwind 输出格式
 
 输入 DSL：
+
 ```json
 {
   "type": "container",
@@ -235,6 +238,7 @@ export function useGenerator() {
 ```
 
 输出 HTML：
+
 ```html
 <div class="flex flex-row gap-4">
   <div class="w-16 h-16 bg-gray-200 rounded"></div>
@@ -244,17 +248,17 @@ export function useGenerator() {
 
 ### 6.2 预设值映射表（MVP）
 
-| 属性 | 预设值 | Tailwind 类 |
-|------|--------|-------------|
-| gap | sm | gap-2 |
-| gap | md | gap-4 |
-| gap | lg | gap-6 |
-| padding | sm | p-2 |
-| padding | md | p-4 |
-| padding | lg | p-6 |
-| borderRadius | sm | rounded |
-| borderRadius | md | rounded-lg |
-| borderRadius | lg | rounded-xl |
+| 属性         | 预设值 | Tailwind 类 |
+| ------------ | ------ | ----------- |
+| gap          | sm     | gap-2       |
+| gap          | md     | gap-4       |
+| gap          | lg     | gap-6       |
+| padding      | sm     | p-2         |
+| padding      | md     | p-4         |
+| padding      | lg     | p-6         |
+| borderRadius | sm     | rounded     |
+| borderRadius | md     | rounded-lg  |
+| borderRadius | lg     | rounded-xl  |
 
 ---
 

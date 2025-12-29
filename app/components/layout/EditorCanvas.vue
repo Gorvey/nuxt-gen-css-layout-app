@@ -2,7 +2,9 @@
 /**
  * 编辑器画布组件
  */
-const { rootContainer } = useEditor()
+import { VueDraggable } from 'vue-draggable-plus'
+
+const { nodes } = useEditor()
 const { deselect } = useSelection()
 const { widthStyle } = useCanvasWidth()
 
@@ -19,12 +21,31 @@ function handleCanvasClick(event: MouseEvent) {
 
 <template>
   <main class="bg-muted/30 overflow-auto p-6 relative" @click="handleCanvasClick">
-    <!-- Root 容器渲染区域 -->
+    <!-- 节点渲染区域 -->
     <div class="min-h-full">
       <!-- 内容容器 -->
       <div class="transition-all duration-200" :style="widthStyle">
-        <!-- Root 容器 -->
-        <EditorNodeRenderer :node="rootContainer" :is-root="true" />
+        <!-- 拖拽区域 -->
+        <VueDraggable
+          v-model="nodes"
+          group="editor"
+          :animation="200"
+          :empty-insert-threshold="50"
+          class="min-h-32 space-y-4"
+        >
+          <!-- 顶层节点 -->
+          <EditorNodeRenderer v-for="node in nodes" :key="node.id" :node="node" />
+        </VueDraggable>
+
+        <!-- 空状态提示 -->
+        <div
+          v-if="nodes.length === 0"
+          class="flex flex-col items-center justify-center py-24 text-muted"
+        >
+          <UIcon name="i-lucide-layout" class="size-16 mb-4 opacity-50" />
+          <p class="text-lg font-medium mb-1">画布为空</p>
+          <p class="text-sm">从左侧拖入容器或元素开始设计</p>
+        </div>
       </div>
     </div>
   </main>

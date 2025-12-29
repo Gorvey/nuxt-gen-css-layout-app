@@ -5,9 +5,9 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       codeInspectorPlugin({
-        bundler: 'vite'
-      })
-    ]
+        bundler: 'vite',
+      }),
+    ],
   },
   modules: ['@nuxt/eslint', '@nuxt/ui'],
 
