@@ -10,17 +10,31 @@ export const useConfigStore = defineStore('config', () => {
   /** 代码预览面板显示状态 */
   const showCodePreview = ref(false)
 
-  /** 编辑器宽度（px） */
-  const editorWidth = ref<number>(600)
+  /** 左侧面板显示状态 */
+  const showLeftPanel = ref(true)
 
-  /** 编辑器高度（px） */
-  const editorHeight = ref<number>(500)
+  /** 右侧面板显示状态 */
+  const showRightPanel = ref(true)
 
   /**
    * 切换代码预览面板显示状态
    */
   const toggleCodePreview = () => {
     showCodePreview.value = !showCodePreview.value
+  }
+
+  /**
+   * 切换左侧面板显示状态
+   */
+  const toggleLeftPanel = () => {
+    showLeftPanel.value = !showLeftPanel.value
+  }
+
+  /**
+   * 切换右侧面板显示状态
+   */
+  const toggleRightPanel = () => {
+    showRightPanel.value = !showRightPanel.value
   }
 
   /**
@@ -37,31 +51,15 @@ export const useConfigStore = defineStore('config', () => {
     showCodePreview.value = false
   }
 
-  /**
-   * 设置编辑器宽度
-   * @param width - 宽度值（px）
-   */
-  const setEditorWidth = (width: number) => {
-    editorWidth.value = width
-  }
-
-  /**
-   * 设置编辑器高度
-   * @param height - 高度值（px）
-   */
-  const setEditorHeight = (height: number) => {
-    editorHeight.value = height
-  }
-
   return {
     showCodePreview,
-    editorWidth,
-    editorHeight,
+    showLeftPanel,
+    showRightPanel,
     toggleCodePreview,
+    toggleLeftPanel,
+    toggleRightPanel,
     openCodePreview,
     closeCodePreview,
-    setEditorWidth,
-    setEditorHeight,
   }
 })
 

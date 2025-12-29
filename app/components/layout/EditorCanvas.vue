@@ -7,9 +7,12 @@
 import { useElementSize, useEventListener } from '@vueuse/core'
 
 const editorStore = useEditorStore()
-const configStore = useConfigStore()
+const pagesStore = usePagesStore()
 const { nodes } = storeToRefs(editorStore)
-const { editorWidth, editorHeight } = storeToRefs(configStore)
+
+/** 当前页面的编辑器尺寸 */
+const editorWidth = computed(() => pagesStore.activePage?.editorWidth ?? 600)
+const editorHeight = computed(() => pagesStore.activePage?.editorHeight ?? 500)
 
 /** 视口变换状态 */
 const transform = reactive({ x: 0, y: 0, scale: 1 })
@@ -164,7 +167,7 @@ useEventListener(window, 'mousemove', (event: MouseEvent) => {
       transform.x = resizeState.value.startViewportX - widthDelta * transform.scale
     }
 
-    configStore.setEditorWidth(newWidth)
+    pagesStore.setCurrentEditorWidth(newWidth)
     return
   }
 
@@ -271,7 +274,7 @@ onMounted(() => {
             type="number"
             size="xs"
             class="w-20"
-            @update:model-value="(v) => configStore.setEditorWidth(Number(v))"
+            @update:model-value="(v) => pagesStore.setCurrentEditorWidth(Number(v))"
           />
         </div>
         <span class="text-xs text-muted-foreground">×</span>
@@ -282,7 +285,7 @@ onMounted(() => {
             type="number"
             size="xs"
             class="w-20"
-            @update:model-value="(v) => configStore.setEditorHeight(Number(v))"
+            @update:model-value="(v) => pagesStore.setCurrentEditorHeight(Number(v))"
           />
         </div>
       </div>
@@ -291,14 +294,14 @@ onMounted(() => {
     <!-- 画布区域 -->
     <main
       ref="canvasRef"
-      class="flex-1 bg-muted/30 overflow-hidden relative cursor-grab active:cursor-grabbing select-none dark:bg-muted/10"
+      class="flex-1 bg-muted/99 overflow-hidden relative cursor-grab active:cursor-grabbing select-none dark:bg-muted/10"
       @mousedown="handleMouseDown"
       @wheel.prevent="handleWheel"
     >
       <!-- 视口容器 -->
       <div
         ref="viewportRef"
-        class="viewport-container absolute top-0 left-0 bg-white shadow-lg"
+        class="viewport-container absolute top-0 left-0 bg-white"
         :style="{
           width: `${editorWidth}px`,
           height: `${editorHeight}px`,
