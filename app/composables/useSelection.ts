@@ -5,22 +5,20 @@
 
 import type { DSLNode } from '~/types/dsl'
 
-/** 选中状态（单例） */
-const selectedId = ref<string | null>(null)
-
 /**
  * 节点选中状态管理
  * @returns 选中状态和操作方法
  */
 export function useSelection() {
-  const { findNode } = useEditor()
+  /** 选中状态（单例） */
+  const selectedId = ref<string | null>(null)
 
   /**
    * 当前选中的节点
    */
   const selectedNode = computed<DSLNode | null>(() => {
-    if (!selectedId.value) return null
-    return findNode(selectedId.value) || null
+    // TODO: 实现获取选中节点逻辑
+    return null
   })
 
   /**

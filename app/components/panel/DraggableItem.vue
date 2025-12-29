@@ -8,21 +8,14 @@ defineProps<{
   icon: string
   /** 显示标签 */
   label: string
-  /** 是否激活（用于容器切换） */
-  isActive?: boolean
 }>()
 </script>
 
 <template>
   <div
-    class="flex items-center gap-3 p-3 rounded-lg border transition-colors"
-    :class="
-      isActive
-        ? 'border-primary bg-primary/5 cursor-default'
-        : 'border-default bg-default hover:bg-elevated cursor-grab active:cursor-grabbing'
-    "
+    class="flex items-center gap-3 p-3 rounded-lg border border-default bg-default hover:bg-elevated cursor-grab active:cursor-grabbing transition-colors"
   >
-    <UIcon :name="icon" class="size-5" :class="isActive ? 'text-primary' : 'text-muted'" />
-    <span class="text-sm font-medium" :class="isActive ? 'text-primary' : ''">{{ label }}</span>
+    <UIcon :name="icon" class="size-5 text-muted" />
+    <span class="text-sm font-medium">{{ label }}</span>
   </div>
 </template>

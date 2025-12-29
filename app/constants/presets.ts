@@ -83,6 +83,27 @@ export const FLEX_ALIGN_MAP: Record<FlexAlign, string> = {
   stretch: 'stretch',
 }
 
+/** Flex grow 值映射 */
+export const FLEX_GROW_MAP: Record<FlexGrow, string> = {
+  0: '0',
+  1: '1',
+}
+
+/** Flex shrink 值映射 */
+export const FLEX_SHRINK_MAP: Record<FlexShrink, string> = {
+  0: '0',
+  1: '1',
+}
+
+/** Flex basis 值映射 */
+export const FLEX_BASIS_MAP: Record<FlexBasis, string> = {
+  auto: 'auto',
+  full: 'full',
+  '1/2': '1/2',
+  '1/3': '1/3',
+  '1/4': '1/4',
+}
+
 /**
  * 生成 padding 类名
  * @param value - 间距预设值
@@ -90,24 +111,6 @@ export const FLEX_ALIGN_MAP: Record<FlexAlign, string> = {
  */
 export function getPaddingClass(value: SpacingPreset): string {
   return `p-${SPACING_MAP[value]}`
-}
-
-/**
- * 生成 margin 类名
- * @param value - 间距预设值
- * @returns Tailwind 类名
- */
-export function getMarginClass(value: SpacingPreset): string {
-  return `m-${SPACING_MAP[value]}`
-}
-
-/**
- * 生成 gap 类名
- * @param value - 间距预设值
- * @returns Tailwind 类名
- */
-export function getGapClass(value: SpacingPreset): string {
-  return `gap-${SPACING_MAP[value]}`
 }
 
 /**
@@ -149,6 +152,15 @@ export function getHeightClass(value: SizePreset): string {
 }
 
 /**
+ * 生成 gap 类名
+ * @param value - 间距预设值
+ * @returns Tailwind 类名
+ */
+export function getGapClass(value: SpacingPreset): string {
+  return `gap-${SPACING_MAP[value]}`
+}
+
+/**
  * 生成 Flex 方向类名
  * @param value - Flex 方向
  * @returns Tailwind 类名
@@ -173,41 +185,6 @@ export function getFlexJustifyClass(value: FlexJustify): string {
  */
 export function getFlexAlignClass(value: FlexAlign): string {
   return `items-${FLEX_ALIGN_MAP[value]}`
-}
-
-/** 左侧面板可拖拽项定义 */
-export const DRAGGABLE_CONTAINERS = [
-  { type: 'flex' as const, label: 'Flex 容器', icon: 'i-lucide-layout-grid' },
-] as const
-
-export const DRAGGABLE_ELEMENTS = [
-  { type: 'text' as const, label: '文本', icon: 'i-lucide-type' },
-  { type: 'image' as const, label: '图片', icon: 'i-lucide-image' },
-  { type: 'button' as const, label: '按钮', icon: 'i-lucide-square' },
-  { type: 'tag' as const, label: '标签', icon: 'i-lucide-tag' },
-  { type: 'icon' as const, label: '图标', icon: 'i-lucide-star' },
-  { type: 'divider' as const, label: '分割线', icon: 'i-lucide-minus' },
-] as const
-
-/** Flex grow 值映射 */
-export const FLEX_GROW_MAP: Record<FlexGrow, string> = {
-  0: '0',
-  1: '1',
-}
-
-/** Flex shrink 值映射 */
-export const FLEX_SHRINK_MAP: Record<FlexShrink, string> = {
-  0: '0',
-  1: '1',
-}
-
-/** Flex basis 值映射 */
-export const FLEX_BASIS_MAP: Record<FlexBasis, string> = {
-  auto: 'auto',
-  full: 'full',
-  '1/2': '1/2',
-  '1/3': '1/3',
-  '1/4': '1/4',
 }
 
 /**

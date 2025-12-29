@@ -22,7 +22,10 @@ const { selectedNode } = useSelection()
       </div>
 
       <!-- 属性编辑器 -->
-      <PanelPropertyEditor v-else :node="selectedNode" />
+      <div v-else>
+        <!-- TODO: 添加属性编辑器 -->
+        <p class="text-sm text-muted">属性编辑器</p>
+      </div>
     </div>
   </aside>
 </template>
